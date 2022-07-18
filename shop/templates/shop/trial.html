@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script>
+        $("#btnPrint").live("click", function () {
+            var divContents = document.getElementById("dvContainer").outerHTML
+            var printWindow = window.open('', '', 'height=1000,width=1000');
+            printWindow.document.write('<html><head><title>DIV Contents</title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        });
+    </script>
+	
+	<style>	
+    .table {
+        text-align: center;
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 20px;
+    }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    form {
+        font-size: 20px;
+    }
+    </style>
+</head>
+<body>
+	{% block body %}
+    <form id="form1">
+    <div id="dvContainer">
+        <table class="table">
+                <tr>
+                    <th> Name </th>
+                    <th> Quantity </th>
+                    <th> Amount </th>
+                </tr>
+                {% for transaction_id, product in maps.items %}
+                    <tr>
+                        <td> {{product.product_name}} </td>
+                        <td> {{product.quantity}} </td>
+                        <td> {{product.amount}} </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2"> <strong>Total price</strong> </td>
+                    <td>{{totalPrice}}</td>
+                </tr>
+            </table>
+    </div>
+	<input type="button" value="Print Div Contents" id="btnPrint" />
+    </form>
+	{% endblock %}
+</body>
+</html>
